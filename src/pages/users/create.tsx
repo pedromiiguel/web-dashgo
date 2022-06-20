@@ -52,12 +52,15 @@ export default function CreateUser() {
 
   const createUser = useMutation(
     async (user: CreateUserFormData) => {
-      console.log(user);
+
+      const data = {
+        email: user.email,
+        name: user.name,
+        password: user.password,
+      };
+
       const response = await api.post('users', {
-        user: {
-          ...user,
-          created_at: new Date(),
-        },
+        ...data,
       });
 
       return response.data.user;
