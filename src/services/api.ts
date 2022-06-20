@@ -11,7 +11,7 @@ export function setupAPIClient(ctx= null) {
 
 
   const api = axios.create({
-    baseURL: 'http://localhost:3333',
+    baseURL: 'http://localhost:3131',
     headers: {
       Authorization: `Bearer ${cookies['dashgo.token']}`,
     },
