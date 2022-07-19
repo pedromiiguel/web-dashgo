@@ -62,7 +62,7 @@ export function setupAPIClient(ctx= null) {
                 destroyCookie(ctx, 'dashgo.token');
                 destroyCookie(ctx, 'dashgo.refreshToken');
                 if (process.browser) {
-                  Router.push('/');
+                  Router.push('/sign-in');
                 }
               })
               .finally(() => {
@@ -87,7 +87,7 @@ export function setupAPIClient(ctx= null) {
           destroyCookie(ctx, 'dashgo.token');
           destroyCookie(ctx, 'dashgo.refreshToken');
           if (process.browser) {
-            Router.push('/');
+            Router.push('/sign-in');
           }else {
             return Promise.reject(new AuthTokenError())
           }

@@ -27,7 +27,7 @@ import Sidebar from '../../components/Sidebar';
 
 import { useUsers } from '../../services/hooks/useUsers';
 import { queryClient } from '../../services/queryClient';
-import { api } from '../../services/api';
+import { api } from '../../services/apiClient';
 
 export default function UserList() {
   const [page, setPage] = useState(1);
@@ -42,7 +42,7 @@ export default function UserList() {
     await queryClient.prefetchQuery(
       ['user', userId],
       async () => {
-        const response = await api.get(`users/${userId}`);
+        const response = await api.get(`user/${userId}`);
 
         return response.data;
       },
@@ -122,17 +122,19 @@ export default function UserList() {
 
                         {isWideVersion && (
                           <Td>
-                            <Button
-                              as="a"
-                              size="sm"
-                              fontSize="sm"
-                              colorScheme="purple"
-                              leftIcon={
-                                <Icon as={RiPencilLine} fontSize="16" />
-                              }
-                            >
-                              Editar
-                            </Button>
+                            <NextLink href={`/users/edit/${user.id}`} passHref>
+                              <Button
+                                as="a"
+                                size="sm"
+                                fontSize="sm"
+                                colorScheme="purple"
+                                leftIcon={
+                                  <Icon as={RiPencilLine} fontSize="16" />
+                                }
+                              >
+                                Editar
+                              </Button>
+                            </NextLink>
                           </Td>
                         )}
                       </Tr>
