@@ -28,13 +28,7 @@ const signInFormschema = yup
   .required();
 
 const SignIn: NextPage = () => {
-  const { user } = useSelector(function (state: RootState) {
-    return state.user;
-  });
-
   const dispatch = useDispatch();
-
-  console.log(user);
 
   const {
     register,
@@ -49,8 +43,8 @@ const SignIn: NextPage = () => {
 
   const handleSignIn: SubmitHandler<SignInFormData> = async (values) => {
     try {
-      const {data} = await api.post('/login', values);
-      
+      const { data } = await api.post('/login', values);
+
       setCookie(undefined, 'dashgo.token', data.token, {
         maxAge: 60 * 60 * 24 * 30, //30 days
         path: '/',
@@ -64,7 +58,7 @@ const SignIn: NextPage = () => {
 
       router.push('/dashboard');
     } catch (err: any) {
-      console.log(err)
+      console.log(err);
       toast({
         position: 'top-right',
         description: err.response.data.message,
@@ -74,15 +68,6 @@ const SignIn: NextPage = () => {
       });
     }
   };
-
-  // useEffect(() => {
-  //   setValue('email', 'teste@example.com',  {
-  //     shouldValidate: true,
-  //   });
-  //   setValue('password', '123123',  { shouldValidate: true });
-
-  // // eslint-disable-next-line react-hooks/exhaustive-deps
-  // },[])
 
   return (
     <>
@@ -142,10 +127,8 @@ const SignIn: NextPage = () => {
 
 export default SignIn;
 
-export const getServerSideProps = withSSRGuest(
-  async (ctx) => {
-    return {
-      props: {},
-    };
-  }
-);
+export const getServerSideProps = withSSRGuest(async (ctx) => {
+  return {
+    props: {},
+  };
+});
