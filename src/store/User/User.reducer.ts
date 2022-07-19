@@ -7,13 +7,15 @@ const initialState = {
   },
 };
 
-interface InitialState {
-  user: {
-    isAuthenticated: boolean;
-    email: string;
-    id: string;
-    name: string;
-  };
+export type User = {
+  isAuthenticated: boolean;
+  email: string;
+  id: string;
+  name: string;
+};
+
+export interface InitialState {
+  user: User;
 }
 
 export default function (state: InitialState = initialState, action: any) {
@@ -21,7 +23,8 @@ export default function (state: InitialState = initialState, action: any) {
     case 'LOGIN':
       return {
         ...state,
-        user: { ...action.payload, isAuthenticated: true },
+        ...action.payload,
+        isAuthenticated: true,
       };
 
     case 'LOGOUT':
