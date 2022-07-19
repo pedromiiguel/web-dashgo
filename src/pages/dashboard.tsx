@@ -7,7 +7,6 @@ import { destroyCookie } from 'nookies';
 import React, { useEffect } from 'react';
 import { withSSRAuth } from '../utils/withSSRAuth';
 
-
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
 import { api } from '../services/apiClient';
@@ -70,20 +69,6 @@ const options: ApexOptions = {
 const series = [{ name: 'series 1', data: [31, 120, 10, 28, 61, 18, 109] }];
 
 const Dashboard = () => {
-  const router = useRouter();
-
-  useEffect(() => {
-    api
-      .get('/courses')
-      .then((response) => console.log(response))
-      .catch(() => {
-        destroyCookie(undefined, 'dashgo.token');
-        destroyCookie(undefined, 'dashgo.refreshToken');
-
-        router.push('/');
-      });
-  }, []);
-
   return (
     <Flex direction="column" h="100vh">
       <Header />
