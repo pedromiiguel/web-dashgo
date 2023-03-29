@@ -1,11 +1,14 @@
+import { ROUTES } from '@/constants/routes';
 import {
   GetServerSideProps,
   GetServerSidePropsContext,
-  GetServerSidePropsResult,
+  GetServerSidePropsResult
 } from 'next';
 import { parseCookies } from 'nookies';
 
-export function withSSRGuest<P>(fn: GetServerSideProps<P>) {
+export function withSSRGuest<P extends { [key: string]: any }>(
+  fn: GetServerSideProps<P>
+) {
   return async (
     ctx: GetServerSidePropsContext
   ): Promise<GetServerSidePropsResult<P>> => {
@@ -14,9 +17,9 @@ export function withSSRGuest<P>(fn: GetServerSideProps<P>) {
     if (cookies['dashgo.token']) {
       return {
         redirect: {
-          destination: '/dashboard',
-          permanent: false,
-        },
+          destination: ROUTES.DASHBOARD,
+          permanent: false
+        }
       };
     }
 
