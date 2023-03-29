@@ -1,11 +1,10 @@
 import { Button, Flex, Icon, Stack } from '@chakra-ui/react';
 import React from 'react';
 import {
-  RiContactsLine,
   RiDashboardLine,
-  RiGitMergeLine,
-  RiInputMethodLine,
+  RiUserLine,
   RiLogoutBoxRLine,
+  RiBarChartFill
 } from 'react-icons/ri';
 import NavLink from './NavLink';
 import NavSection from './NavSection';
@@ -22,20 +21,14 @@ export default function SidebarNav() {
     <Flex direction="column" justify="space-between">
       <Stack spacing="12" align="flex-start">
         <NavSection title="GERAL">
-          <NavLink icon={RiContactsLine} href="/dashboard">
-            Dashboard
+          <NavLink icon={RiBarChartFill} href="/">
+            Home
           </NavLink>
-          <NavLink icon={RiDashboardLine} href="/users">
+          <NavLink icon={RiUserLine} href="/users">
             Usuários
           </NavLink>
-        </NavSection>
-
-        <NavSection title="AUTOMAÇÃO">
-          <NavLink icon={RiInputMethodLine} href="/forms">
-            Formulários
-          </NavLink>
-          <NavLink icon={RiGitMergeLine} href="/automation">
-            Automação
+          <NavLink icon={RiDashboardLine} href="/products">
+            Produtos
           </NavLink>
         </NavSection>
       </Stack>
@@ -45,7 +38,7 @@ export default function SidebarNav() {
         bg="pink.500"
         cursor="pointer"
         _hover={{
-          bg: 'pink.600',
+          bg: 'pink.600'
         }}
         leftIcon={<Icon as={RiLogoutBoxRLine} fontSize="20" />}
         onClick={() => {
