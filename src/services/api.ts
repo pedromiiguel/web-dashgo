@@ -1,33 +1,37 @@
-import axios, { AxiosError } from 'axios';
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import Router from 'next/router';
-import { AuthTokenError } from '../errors/AuthTokenError'
+import { AuthTokenError } from '../errors/AuthTokenError';
 import { destroyCookie, parseCookies, setCookie } from 'nookies';
 
-let failedRequestQueue = [] as any;
+interface FailedRequest {
+  onSuccess: (token: string) => void;
+  onFailure: (error: AxiosError) => void;
+}
+
+let failedRequestQueue: FailedRequest[] = [];
 let isRefreshing = false;
 
-export function setupAPIClient(ctx= null) {
+export function setupAPIClient(ctx = null) {
   let cookies = parseCookies(ctx);
 
-
   const api = axios.create({
-    baseURL: 'http://localhost:3131',
+    baseURL: 'http://localhost:3333',
     headers: {
-      Authorization: `Bearer ${cookies['dashgo.token']}`,
-    },
+      Authorization: `Bearer ${cookies['dashgo.token']}`
+    }
   });
 
   api.interceptors.response.use(
-    (response) => {
+    (response: AxiosResponse) => {
       return response;
     },
-    (error: AxiosError) => {
+    (error: AxiosError<{ message: string }>) => {
       if (error?.response?.status === 401) {
         if (error?.response?.data?.message === 'Token invalid') {
           cookies = parseCookies(ctx);
-         
+
           const { 'dashgo.refreshToken': refreshToken } = cookies;
-          const originalConfig = error.config;
+          const originalConfig = error.config as AxiosRequestConfig;
 
           if (!isRefreshing) {
             isRefreshing = true;
@@ -38,24 +42,23 @@ export function setupAPIClient(ctx= null) {
 
                 setCookie(undefined, 'dashgo.token', token, {
                   maxAge: 60 * 60 * 24 * 30, //30 days
-                  path: '/',
+                  path: '/'
                 });
+
                 setCookie(
                   undefined,
                   'dashgo.refreshToken',
                   response.data.refreshToken.id
                 );
 
-                //@ts-ignore
                 api.defaults.headers['Authorization'] = `Bearer ${token}`;
-                //@ts-ignore
+
                 failedRequestQueue.forEach((request) =>
                   request.onSuccess(token)
                 );
                 failedRequestQueue = [];
               })
               .catch((err) => {
-                //@ts-ignore
                 failedRequestQueue.forEach((request) => request.onFailure(err));
                 failedRequestQueue = [];
 
@@ -73,14 +76,15 @@ export function setupAPIClient(ctx= null) {
           return new Promise((resolve, reject) => {
             failedRequestQueue.push({
               onSuccess: (token: string) => {
-                //@ts-ignore
-                originalConfig.headers['Authorization'] = `Bearer ${token}`;
+                if (originalConfig.headers) {
+                  originalConfig.headers['Authorization'] = `Bearer ${token}`;
 
-                resolve(api(originalConfig));
+                  resolve(api(originalConfig));
+                }
               },
               onFailure: (err: AxiosError) => {
                 reject(err);
-              },
+              }
             });
           });
         } else {
@@ -88,8 +92,8 @@ export function setupAPIClient(ctx= null) {
           destroyCookie(ctx, 'dashgo.refreshToken');
           if (process.browser) {
             Router.push('/sign-in');
-          }else {
-            return Promise.reject(new AuthTokenError())
+          } else {
+            return Promise.reject(new AuthTokenError());
           }
         }
       }
