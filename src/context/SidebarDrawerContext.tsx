@@ -12,12 +12,11 @@ const SidebarDrawerContext = createContext({} as SidebarDrawerContextData);
 
 export function SidebarDrawerProvider({ children }: SidebarDrawerProps) {
   const disclosure = useDisclosure();
-  console.log(disclosure)
   const router = useRouter();
 
   useEffect(() => {
     disclosure.onClose();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.asPath]);
 
   return (
