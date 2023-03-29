@@ -1,12 +1,18 @@
-export function login(data: any) {
+export type LoginPayload = {
+  email: string;
+  id: string;
+  name: string;
+};
+
+export function login(payload: LoginPayload) {
   return {
     type: 'LOGIN',
-    payload: data,
+    payload
   };
 }
 
 export function logout() {
   return {
-    type: 'LOGOUT',
+    type: 'LOGOUT'
   };
 }

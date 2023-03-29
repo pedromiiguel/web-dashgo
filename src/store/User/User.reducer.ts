@@ -1,36 +1,36 @@
-const initialState = {
-  user: {
-    isAuthenticated: false,
-    email: '',
-    id: '',
-    name: '',
-  },
+import { LoginPayload } from './User.actions';
+
+export const initialState = {
+  isAuthenticated: false,
+  email: '',
+  id: '',
+  name: ''
 };
 
-export type User = {
+export type UserState = {
   isAuthenticated: boolean;
   email: string;
   id: string;
   name: string;
 };
 
-export interface InitialState {
-  user: User;
-}
-
-export default function (state: InitialState = initialState, action: any) {
+export default function (
+  state: UserState = initialState,
+  action: {
+    type: string;
+    payload?: LoginPayload;
+  }
+) {
   switch (action.type) {
     case 'LOGIN':
       return {
-        ...state,
         ...action.payload,
-        isAuthenticated: true,
+        isAuthenticated: true
       };
 
     case 'LOGOUT':
       return {
-        ...state,
-        user: { ...action.payload, isAuthenticated: false },
+        ...initialState
       };
     default:
       return state;

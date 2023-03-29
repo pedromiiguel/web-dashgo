@@ -1,3 +1,3 @@
-import { InitialState } from './User.reducer';
+import { UserState } from './User.reducer';
 
-export const authenticatedUser = (state: InitialState) => state.user
+export const authenticatedUser = (state: { user: UserState }) => state.user;
