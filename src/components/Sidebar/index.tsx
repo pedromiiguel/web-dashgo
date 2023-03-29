@@ -6,19 +6,19 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerOverlay,
-  useBreakpointValue,
+  useBreakpointValue
 } from '@chakra-ui/react';
 import React from 'react';
 import { useSidebarDrawer } from '../../context/SidebarDrawerContext';
 
 import SidebarNav from './SidebarNav';
 
-const Sidebar = () => {
+export const Sidebar = () => {
   const { isOpen, onClose } = useSidebarDrawer();
 
   const isDrawerSidebar = useBreakpointValue({
     base: true,
-    sm: false,
+    sm: false
   });
 
   if (isDrawerSidebar) {
@@ -44,5 +44,3 @@ const Sidebar = () => {
     </Box>
   );
 };
-
-export default Sidebar;
