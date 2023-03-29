@@ -23,15 +23,14 @@ export default function ActiveLink({
   if (
     !shouldMatchExactHref &&
     (asPath.startsWith(String(rest.href)) || asPath.startsWith(String(rest.as)))
-  ){
+  ) {
     isActive = true;
-
   }
-    return (
-      <Link {...rest}>
-        {cloneElement(children, {
-          color: isActive ? 'pink.400' : 'gray.50',
-        })}
-      </Link>
-    );
+  return (
+    <Link {...rest}>
+      {cloneElement(children, {
+        color: isActive ? 'pink.400' : 'gray.50'
+      })}
+    </Link>
+  );
 }

@@ -10,7 +10,7 @@ interface PaginationItemProps {
 export default function PaginationItem({
   number,
   isCurrent = false,
-  onPageChange,
+  onPageChange
 }: PaginationItemProps) {
   if (isCurrent) {
     return (
@@ -34,7 +34,7 @@ export default function PaginationItem({
       w="4"
       bg="gray.700"
       _hover={{
-        bg: 'gray.500',
+        bg: 'gray.500'
       }}
       onClick={() => onPageChange(number)}
     >
