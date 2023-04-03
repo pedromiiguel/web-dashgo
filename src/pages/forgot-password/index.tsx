@@ -1,4 +1,4 @@
-import { Button, Flex, Heading, Stack, Text } from '@chakra-ui/react';
+import { Button, Flex, Heading, Stack, Text, useToast } from '@chakra-ui/react';
 import { NextPage } from 'next';
 
 import { useForm, FormProvider } from 'react-hook-form';
@@ -30,16 +30,36 @@ const ForgotPassword: NextPage = () => {
     resolver: yupResolver(forgotPasswordSchema)
   });
   const router = useRouter();
+  const toast = useToast();
 
-  const { mutateAsync } = useMutation((data: ForgotPasswordFormData) =>
-    api.post('/forgot-password', data)
+  const { mutateAsync, isLoading } = useMutation(
+    (data: ForgotPasswordFormData) => api.post('/forgot-password', data),
+    {
+      onSuccess: () => {
+        toast({
+          position: 'top-right',
+          description: 'E-mail enviado!',
+          status: 'success',
+          duration: 9000,
+          isClosable: true
+        });
+
+        router.push(ROUTES.LOGIN);
+      },
+      onError: (error) => {
+        toast({
+          position: 'top-right',
+          description: error.response.data.message,
+          status: 'error',
+          duration: 9000,
+          isClosable: true
+        });
+      }
+    }
   );
 
   const handleForgotPassword = async (values: ForgotPasswordFormData) => {
-    console.log(values);
     await mutateAsync(values);
-
-    router.push(ROUTES.LOGIN);
   };
 
   console.log(form.formState.errors);
@@ -75,7 +95,7 @@ const ForgotPassword: NextPage = () => {
               mt="6"
               colorScheme="pink"
               size="lg"
-              isLoading={form.formState.isSubmitting}
+              isLoading={isLoading}
             >
               Enviar
             </Button>
