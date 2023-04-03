@@ -2,6 +2,7 @@ import { Logo } from '@/components';
 import { Flex } from '@chakra-ui/react';
 
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 
 interface AuthTemplateProps {
   title: string;
@@ -14,6 +15,7 @@ export const AuthTemplate = ({
   description,
   children
 }: AuthTemplateProps) => {
+  const router = useRouter();
   return (
     <>
       <Head>
@@ -29,7 +31,12 @@ export const AuthTemplate = ({
         flexDirection="column"
         gap={4}
       >
-        <Logo />
+        <Logo
+          onClick={() => {
+            router.push('/');
+          }}
+        />
+
         <Flex w="100%" maxWidth={360} bg="gray.800" p="8" borderRadius={8}>
           {children}
         </Flex>
