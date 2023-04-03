@@ -121,7 +121,7 @@ const SignUp: NextPage = () => {
               Já se cadastrou no Dashgo?{' '}
               <Link href="/sign-in" passHref>
                 <Text as="a" color="pink.500" textDecoration="underline">
-                  Entre
+                  Cadastrar
                 </Text>
               </Link>
             </Text>
