@@ -11,6 +11,7 @@ import { useRouter } from 'next/router';
 import { ROUTES } from '@/constants/routes';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { AxiosError } from 'axios';
 
 interface ForgotPasswordFormData {
   email: string;
@@ -46,14 +47,17 @@ const ForgotPassword: NextPage = () => {
 
         router.push(ROUTES.LOGIN);
       },
-      onError: (error) => {
-        toast({
-          position: 'top-right',
-          description: error.response.data.message,
-          status: 'error',
-          duration: 9000,
-          isClosable: true
-        });
+      onError: (error: AxiosError) => {
+        if (error.response) {
+          const { message } = error.response.data as AxiosError;
+          toast({
+            position: 'top-right',
+            description: message,
+            status: 'error',
+            duration: 9000,
+            isClosable: true
+          });
+        }
       }
     }
   );
